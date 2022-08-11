@@ -1,10 +1,8 @@
 package com.start.constantaintership.models
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
+
 data class MovieModel (
 
     @SerializedName("title")
@@ -18,15 +16,9 @@ data class MovieModel (
 
     @SerializedName("actors")
     var actorsList: List<Actors?>?
+)
 
-): Parcelable {
-    constructor() : this("",0,"", null)
-}
-
-@Parcelize
 data class Actors (
     @SerializedName("actorName")
     var actor: String?,
-) : Parcelable {
-    constructor() : this(null)
-}
+)

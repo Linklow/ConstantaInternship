@@ -2,6 +2,7 @@ package com.start.constantaintership.ui.main
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,8 +36,9 @@ class MainFragment : Fragment(), OnItemClickListener {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this, MyViewModelFactory(MovieRepository()))[MainViewModel::class.java]
 
         initRecyclerView()
@@ -51,7 +53,7 @@ class MainFragment : Fragment(), OnItemClickListener {
 
     private fun initRecyclerView() {
         binding.rvMoviesList.layoutManager = LinearLayoutManager(requireContext())
-        recyclerAdapter = MovieAdapter(requireContext(),this)
+        recyclerAdapter = MovieAdapter(this)
         binding.rvMoviesList.adapter = recyclerAdapter
     }
 
@@ -59,6 +61,7 @@ class MainFragment : Fragment(), OnItemClickListener {
         val viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.getLiveDataObserver().observe(viewLifecycleOwner) {
             if (it != null) {
+                Log.d("steps1", it[1].title.toString())
                 recyclerAdapter.setMovieList(it)
                 recyclerAdapter.notifyDataSetChanged()
             } else {
@@ -69,10 +72,10 @@ class MainFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClicked(movie: MovieModel) {
-        var aboutDialog = AlertDialog.Builder(
+        val aboutDialog = AlertDialog.Builder(
             requireContext()).setMessage("Фильм \"${movie.title.toString()}\" был нажат")
             .setPositiveButton("OK") { _, _ -> }.create()
-        aboutDialog.show();
+        aboutDialog.show()
     }
 
 }
